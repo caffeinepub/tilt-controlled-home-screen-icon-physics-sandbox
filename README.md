@@ -1,2 +1,3 @@
-# tilt-controlled-home-screen-icon-physics-sandbox
-Exported from Caffeine project: Tilt-controlled home screen icon physics sandbox
+## Tilt-controlled home screen icon physics sandbox
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

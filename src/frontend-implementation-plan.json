@@ -1,0 +1,218 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Tilt-controlled home screen icon physics sandbox (frontend-only)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Render a single-page home-screen-like simulation with a wallpaper and a grid of icons that tip/slide/roll based on tilt input while staying inside visible bounds.",
+      "acceptanceCriteria": [
+        "The app renders a home-screen-like layout (wallpaper + a grid of icons) inside the web app UI.",
+        "When the device is tilted (mobile/tablet) or the desktop control is used, icons visibly tip, slide, and roll in the direction of tilt.",
+        "Icons remain constrained within the visible “screen” bounds (they do not disappear off-canvas)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the single-page app shell that renders the Home Screen Sandbox view as the primary UI (no extra routes)."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+          "operation": "create",
+          "description": "Implement the main page layout: wallpaper-backed 'device screen' container, overlay HUD for controls/status, and the simulation surface hosting the icons."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/DeviceScreenFrame.tsx",
+          "operation": "create",
+          "description": "Create a reusable frame component that constrains the simulation to a rounded-rectangle 'screen' area and applies the wallpaper background image from frontend/public/assets/generated/wallpaper.dim_1170x2532.png."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/IconPhysicsCanvas.tsx",
+          "operation": "create",
+          "description": "Create a canvas-based renderer that draws icons (from generated static PNGs) with position/rotation and clamps all motion to the visible screen bounds; account for devicePixelRatio for crisp rendering across screen sizes."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/iconAssets.ts",
+          "operation": "create",
+          "description": "Centralize references to the generated icon image asset paths and metadata (e.g., label, filename) for consistent use across the simulation and UI."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Use DeviceOrientation tilt input on supported devices with an explicit iOS/iPadOS permission-request flow, and gracefully fall back when unavailable/denied.",
+      "acceptanceCriteria": [
+        "On devices that support DeviceOrientation, the simulation responds to physical tilt.",
+        "If permission is required (e.g., iOS), the UI provides a button/flow to request motion/orientation permission and displays a helpful error state if denied.",
+        "If DeviceOrientation is unavailable, the app automatically falls back to a desktop control (see REQ-3) without breaking the page."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/homeScreenSandbox/hooks/useDeviceTilt.ts",
+          "operation": "create",
+          "description": "Implement a hook that reads tilt via DeviceOrientation (or equivalent), exposes a normalized gravity vector, and tracks availability/permission state (including iOS-style requestPermission flow)."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/MotionPermissionPanel.tsx",
+          "operation": "create",
+          "description": "Add UI that explains motion access, provides a user-initiated button to request permission when required, and shows a clear denied/unavailable error state. Use shadcn-ui components (e.g., Button/Card/Alert) for consistent controls; Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+          "operation": "modify",
+          "description": "Wire device tilt hook + permission panel into the page: auto-enable sensor tilt when available/allowed, otherwise fall back to desktop tilt controls without breaking the simulation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Provide desktop controls (mouse/keyboard) to drive the same tilt input plus a Reset action to restore a neat icon grid and neutral tilt, while keeping interaction performant.",
+      "acceptanceCriteria": [
+        "On desktop, the user can change the effective tilt/gravity direction using on-screen controls (mouse/keyboard).",
+        "A Reset action returns icons to an initial neat grid and resets tilt to neutral.",
+        "The simulation remains performant and responsive during continuous input changes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/homeScreenSandbox/hooks/useDesktopTiltControls.ts",
+          "operation": "create",
+          "description": "Implement a hook that produces a gravity vector from desktop interactions (mouse drag/pointer movement and keyboard arrows), including smoothing/clamping to keep the simulation stable."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/DesktopTiltControl.tsx",
+          "operation": "create",
+          "description": "Create an on-screen desktop tilt control (e.g., drag pad/joystick-like control and keyboard hint text) that updates the gravity vector. Use shadcn-ui components where appropriate (e.g., Button for actions, Tooltip/Popover for hints); Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/SimulationControlsBar.tsx",
+          "operation": "create",
+          "description": "Add a compact HUD bar with Reset and status indicators (sensor active vs desktop mode). Use shadcn-ui Button and optional Badge/Separator for consistent styling; Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/state/simulationController.ts",
+          "operation": "create",
+          "description": "Provide a small controller API used by UI controls to reset tilt to neutral and re-stack/re-seed icon bodies into an initial grid (shared between sensor and desktop modes)."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+          "operation": "modify",
+          "description": "Wire DesktopTiltControl and SimulationControlsBar into the page; connect Reset to simulationController so icons return to the neat grid and tilt returns to neutral."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement lightweight 2D physics for icons (tilt-derived gravity, bounds collisions, icon-to-icon collisions, restitution/friction) for a stable 'fall/roll' effect.",
+      "acceptanceCriteria": [
+        "Icons accelerate in the direction of the tilt-derived gravity vector.",
+        "Icons collide with the screen edges and bounce/settle with visible damping (not perfectly elastic).",
+        "Icons collide with each other in a stable way (no frequent tunneling or exploding velocities under normal tilt)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/homeScreenSandbox/physics/types.ts",
+          "operation": "create",
+          "description": "Define lightweight physics types (rigid body state for an icon, world params, contacts) used consistently by the simulation loop and renderer."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/physics/engine.ts",
+          "operation": "create",
+          "description": "Implement a simple 2D physics stepper: integrate velocity/position from gravity, apply damping, resolve collisions against bounds, and resolve icon-to-icon collisions with basic restitution and friction; include safe-guards for stability (velocity caps, fixed timestep accumulator)."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/physics/initialLayout.ts",
+          "operation": "create",
+          "description": "Create the initial neat grid layout generator (positions/spacing) sized to the device screen frame, used both at start and on Reset."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/IconPhysicsCanvas.tsx",
+          "operation": "modify",
+          "description": "Drive rendering from the physics engine using requestAnimationFrame; apply rotation/translation per icon, and ensure the simulation stays performant under continuous input changes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Apply a coherent, distinct non-blue/purple-dominant theme (colors, typography, spacing) across the simulation and controls.",
+      "acceptanceCriteria": [
+        "The home screen simulation has a polished look with a consistent color system, typography, and spacing.",
+        "The chosen palette is not primarily blue/purple.",
+        "UI controls (permission, reset, desktop tilt control) match the same theme."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and Tailwind CSS variable overrides to establish a warm, distinct palette (e.g., amber/teal/neutral) and consistent typography/spacing tokens while avoiding a blue/purple-dominant look."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust theme extensions (if needed) to support the chosen warm palette and consistent radii/shadows for the 'device frame' and HUD controls."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+          "operation": "modify",
+          "description": "Apply the theme consistently across the page (layout spacing, text styles, control styling) so the simulation and UI controls feel cohesive."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add generated static wallpaper and app icon images under frontend/public/assets/generated and render them as crisp static assets in the simulation UI.",
+      "acceptanceCriteria": [
+        "The wallpaper and icon images are loaded from frontend/public/assets/generated (not served from the backend).",
+        "The simulation uses the generated icon images as the rolling/falling items.",
+        "Assets render crisply across common screen sizes (mobile/tablet/desktop)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/wallpaper.dim_1170x2532.png",
+          "operation": "create",
+          "description": "Add generated wallpaper asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-camera.dim_256x256.png",
+          "operation": "create",
+          "description": "Add generated icon asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-music.dim_256x256.png",
+          "operation": "create",
+          "description": "Add generated icon asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-chat.dim_256x256.png",
+          "operation": "create",
+          "description": "Add generated icon asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-map.dim_256x256.png",
+          "operation": "create",
+          "description": "Add generated icon asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-game.dim_256x256.png",
+          "operation": "create",
+          "description": "Add generated icon asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-settings.dim_256x256.png",
+          "operation": "create",
+          "description": "Add generated icon asset as a static file at the required path and filename."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/components/DeviceScreenFrame.tsx",
+          "operation": "modify",
+          "description": "Wire the wallpaper background using frontend/public/assets/generated/wallpaper.dim_1170x2532.png as a static asset and ensure it scales well within the screen frame."
+        },
+        {
+          "path": "frontend/src/features/homeScreenSandbox/iconAssets.ts",
+          "operation": "modify",
+          "description": "Reference the generated icon files (frontend/public/assets/generated/icon-camera.dim_256x256.png, icon-music.dim_256x256.png, icon-chat.dim_256x256.png, icon-map.dim_256x256.png, icon-game.dim_256x256.png, icon-settings.dim_256x256.png) and ensure they are used as the simulated bodies' textures."
+        }
+      ]
+    }
+  ]
+}

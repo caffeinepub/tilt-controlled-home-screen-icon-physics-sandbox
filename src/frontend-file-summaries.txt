@@ -1,0 +1,17 @@
+{
+  "frontend/src/App.tsx": "Root application component that renders the HomeScreenSandboxPage as the main view.",
+  "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx": "Main page orchestrating device tilt detection, desktop controls, physics simulation, and permission handling with conditional rendering based on input source.",
+  "frontend/src/features/homeScreenSandbox/components/DeviceScreenFrame.tsx": "Container component that renders a phone-like frame with rounded corners, border, and wallpaper background for the physics simulation.",
+  "frontend/src/features/homeScreenSandbox/components/IconPhysicsCanvas.tsx": "Canvas-based renderer that loads icon images, runs the physics simulation loop via requestAnimationFrame, and draws icons with position/rotation/shadows.",
+  "frontend/src/features/homeScreenSandbox/components/MotionPermissionPanel.tsx": "UI card component for requesting DeviceOrientation permission on iOS with clear messaging and error states using shadcn Button, Card, and Alert components.",
+  "frontend/src/features/homeScreenSandbox/components/SimulationControlsBar.tsx": "Control bar displaying current input mode (device tilt vs desktop) and a reset button using shadcn Button and Badge components.",
+  "frontend/src/features/homeScreenSandbox/components/DesktopTiltControl.tsx": "Interactive drag pad and keyboard control for desktop users to simulate device tilt with visual gravity indicator using shadcn Card component.",
+  "frontend/src/features/homeScreenSandbox/hooks/useDeviceTilt.ts": "React hook managing DeviceOrientation API access, iOS permission requests, and normalized gravity vector output from device tilt.",
+  "frontend/src/features/homeScreenSandbox/hooks/useDesktopTiltControls.ts": "React hook providing gravity state management and reset functionality for desktop tilt controls.",
+  "frontend/src/features/homeScreenSandbox/physics/types.ts": "TypeScript type definitions for physics simulation including Vec2, RigidBody, and WorldParams interfaces.",
+  "frontend/src/features/homeScreenSandbox/physics/engine.ts": "Custom 2D physics engine implementing gravity integration, velocity damping, bounds collision, and body-to-body collision resolution with restitution and friction.",
+  "frontend/src/features/homeScreenSandbox/physics/initialLayout.ts": "Utility function that generates initial grid layout positions for icon bodies based on canvas dimensions and icon count.",
+  "frontend/src/features/homeScreenSandbox/iconAssets.ts": "Static configuration array defining icon metadata (id, label, path) for all app icons used in the simulation.",
+  "frontend/src/index.css": "Global styles with warm amber/teal OKLCH color palette for light and dark modes, avoiding blue/purple dominance.",
+  "frontend/tailwind.config.js": "Tailwind configuration with Inter font family and extended theme tokens matching the warm amber/teal design system."
+}

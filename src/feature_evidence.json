@@ -1,0 +1,128 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-a-single-page-interactive-simulation-of-a-device-home-screen-where-a-set-of-app-icons-can-fall-over-and-roll-around-inside-the-app-when-the-user-tilts-their-phone-ipad-or-moves-an-equivalent-control-on-desktop",
+      "featureTitle": "Implement a single-page interactive simulation of a device “home screen” where a set of app icons can fall over and roll around inside the app when the user tilts their phone/iPad or moves an equivalent control on desktop.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+        "frontend/src/features/homeScreenSandbox/components/DeviceScreenFrame.tsx",
+        "frontend/src/features/homeScreenSandbox/components/IconPhysicsCanvas.tsx",
+        "frontend/src/features/homeScreenSandbox/iconAssets.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-use-device-tilt-on-supported-mobile-tablet-browsers-via-deviceorientation-or-equivalent-and-provide-a-clear-permission-request-flow-for-ios-ipados-when-required",
+      "featureTitle": "Use device tilt on supported mobile/tablet browsers via DeviceOrientation (or equivalent) and provide a clear permission request flow for iOS/iPadOS when required.",
+      "files": [
+        "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+        "frontend/src/features/homeScreenSandbox/components/MotionPermissionPanel.tsx",
+        "frontend/src/features/homeScreenSandbox/hooks/useDeviceTilt.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-desktop-computer-controls-to-drive-the-same-tilt-input-without-relying-on-device-sensors-e-g-mouse-drag-to-set-gravity-direction-and-or-keyboard-controls-including-a-reset-action-to-re-center-and-re-stack-icons",
+      "featureTitle": "Provide desktop (computer) controls to drive the same tilt input without relying on device sensors (e.g., mouse drag to set gravity direction and/or keyboard controls), including a “Reset” action to re-center and re-stack icons.",
+      "files": [
+        "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+        "frontend/src/features/homeScreenSandbox/components/DesktopTiltControl.tsx",
+        "frontend/src/features/homeScreenSandbox/components/SimulationControlsBar.tsx",
+        "frontend/src/features/homeScreenSandbox/hooks/useDesktopTiltControls.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-lightweight-2d-physics-behavior-for-icons-gravity-from-tilt-vector-collision-against-bounds-and-icon-to-icon-collisions-with-basic-restitution-friction-sufficient-to-create-a-fall-over-and-roll-around-effect",
+      "featureTitle": "Implement lightweight 2D physics behavior for icons (gravity from tilt vector, collision against bounds, and icon-to-icon collisions with basic restitution/friction) sufficient to create a ‘fall over and roll around’ effect.",
+      "files": [
+        "frontend/src/features/homeScreenSandbox/components/IconPhysicsCanvas.tsx",
+        "frontend/src/features/homeScreenSandbox/physics/engine.ts",
+        "frontend/src/features/homeScreenSandbox/physics/initialLayout.ts",
+        "frontend/src/features/homeScreenSandbox/physics/types.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-coherent-distinct-visual-theme-for-the-app-ui-and-apply-it-consistently-colors-typography-spacing-and-components-avoiding-a-blue-purple-dominant-palette",
+      "featureTitle": "Add a coherent, distinct visual theme for the app UI and apply it consistently (colors, typography, spacing, and components), avoiding a blue/purple-dominant palette.",
+      "files": [
+        "frontend/src/features/homeScreenSandbox/HomeScreenSandboxPage.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-image-assets-for-a-wallpaper-background-and-a-small-set-of-app-icons-and-render-them-from-the-frontend-as-static-files-under-frontend-public-assets-generated",
+      "featureTitle": "Add generated static image assets for a wallpaper background and a small set of app icons, and render them from the frontend as static files under frontend/public/assets/generated.",
+      "files": [
+        "frontend/src/features/homeScreenSandbox/components/DeviceScreenFrame.tsx",
+        "frontend/src/features/homeScreenSandbox/iconAssets.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

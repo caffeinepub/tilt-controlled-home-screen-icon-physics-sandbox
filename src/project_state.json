@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build an app that makes home screen app icons fall over and roll around based on device tilt across phone, tablet, and computer.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Playful abstract phone wallpaper background, warm gradient with subtle noise texture (wallpaper.dim_1170x2532.png)\n- Rounded-square app icon: camera symbol, flat vector, high contrast (icon-camera.dim_256x256.png)\n- Rounded-square app icon: music note symbol, flat vector, high contrast (icon-music.dim_256x256.png)\n- Rounded-square app icon: chat bubble symbol, flat vector, high contrast (icon-chat.dim_256x256.png)\n- Rounded-square app icon: map pin symbol, flat vector, high contrast (icon-map.dim_256x256.png)\n- Rounded-square app icon: game controller symbol, flat vector, high contrast (icon-game.dim_256x256.png)\n- Rounded-square app icon: settings gear symbol, flat vector, high contrast (icon-settings.dim_256x256.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-a-single-page-interactive-simulation-of-a-device-home-screen-where-a-set-of-app-icons-can-fall-over-and-roll-around-inside-the-app-when-the-user-tilts-their-phone-ipad-or-moves-an-equivalent-control-on-desktop",
+      "title": "Implement a single-page interactive simulation of a device “home screen” where a set of app icons can fall over and roll around inside the app when the user tilts their phone/iPad or moves an equivalent control on desktop.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-use-device-tilt-on-supported-mobile-tablet-browsers-via-deviceorientation-or-equivalent-and-provide-a-clear-permission-request-flow-for-ios-ipados-when-required",
+      "title": "Use device tilt on supported mobile/tablet browsers via DeviceOrientation (or equivalent) and provide a clear permission request flow for iOS/iPadOS when required.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-desktop-computer-controls-to-drive-the-same-tilt-input-without-relying-on-device-sensors-e-g-mouse-drag-to-set-gravity-direction-and-or-keyboard-controls-including-a-reset-action-to-re-center-and-re-stack-icons",
+      "title": "Provide desktop (computer) controls to drive the same tilt input without relying on device sensors (e.g., mouse drag to set gravity direction and/or keyboard controls), including a “Reset” action to re-center and re-stack icons.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-lightweight-2d-physics-behavior-for-icons-gravity-from-tilt-vector-collision-against-bounds-and-icon-to-icon-collisions-with-basic-restitution-friction-sufficient-to-create-a-fall-over-and-roll-around-effect",
+      "title": "Implement lightweight 2D physics behavior for icons (gravity from tilt vector, collision against bounds, and icon-to-icon collisions with basic restitution/friction) sufficient to create a ‘fall over and roll around’ effect.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-coherent-distinct-visual-theme-for-the-app-ui-and-apply-it-consistently-colors-typography-spacing-and-components-avoiding-a-blue-purple-dominant-palette",
+      "title": "Add a coherent, distinct visual theme for the app UI and apply it consistently (colors, typography, spacing, and components), avoiding a blue/purple-dominant palette.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-image-assets-for-a-wallpaper-background-and-a-small-set-of-app-icons-and-render-them-from-the-frontend-as-static-files-under-frontend-public-assets-generated",
+      "title": "Add generated static image assets for a wallpaper background and a small set of app icons, and render them from the frontend as static files under frontend/public/assets/generated.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Animate home screen app icons to fall over and roll around when the device is tilted (phone/iPad/computer).",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Tilt-controlled home screen icon physics sandbox",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

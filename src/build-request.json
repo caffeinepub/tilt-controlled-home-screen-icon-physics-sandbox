@@ -1,0 +1,131 @@
+{
+  "kind": "build_request",
+  "title": "Tilt-controlled home screen icon physics sandbox",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement a single-page interactive simulation of a device “home screen” where a set of app icons can fall over and roll around inside the app when the user tilts their phone/iPad or moves an equivalent control on desktop.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "make an app that make your apps on your phone fall over and roll around on the home screen when ever you tilt you phone or ipad or computer"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app renders a home-screen-like layout (wallpaper + a grid of icons) inside the web app UI.",
+        "When the device is tilted (mobile/tablet) or the desktop control is used, icons visibly tip, slide, and roll in the direction of tilt.",
+        "Icons remain constrained within the visible “screen” bounds (they do not disappear off-canvas)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Use device tilt on supported mobile/tablet browsers via DeviceOrientation (or equivalent) and provide a clear permission request flow for iOS/iPadOS when required.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On devices that support DeviceOrientation, the simulation responds to physical tilt.",
+        "If permission is required (e.g., iOS), the UI provides a button/flow to request motion/orientation permission and displays a helpful error state if denied.",
+        "If DeviceOrientation is unavailable, the app automatically falls back to a desktop control (see REQ-3) without breaking the page."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Provide desktop (computer) controls to drive the same tilt input without relying on device sensors (e.g., mouse drag to set gravity direction and/or keyboard controls), including a “Reset” action to re-center and re-stack icons.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On desktop, the user can change the effective tilt/gravity direction using on-screen controls (mouse/keyboard).",
+        "A Reset action returns icons to an initial neat grid and resets tilt to neutral.",
+        "The simulation remains performant and responsive during continuous input changes."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement lightweight 2D physics behavior for icons (gravity from tilt vector, collision against bounds, and icon-to-icon collisions with basic restitution/friction) sufficient to create a ‘fall over and roll around’ effect.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Icons accelerate in the direction of the tilt-derived gravity vector.",
+        "Icons collide with the screen edges and bounce/settle with visible damping (not perfectly elastic).",
+        "Icons collide with each other in a stable way (no frequent tunneling or exploding velocities under normal tilt)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add a coherent, distinct visual theme for the app UI and apply it consistently (colors, typography, spacing, and components), avoiding a blue/purple-dominant palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The home screen simulation has a polished look with a consistent color system, typography, and spacing.",
+        "The chosen palette is not primarily blue/purple.",
+        "UI controls (permission, reset, desktop tilt control) match the same theme."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add generated static image assets for a wallpaper background and a small set of app icons, and render them from the frontend as static files under frontend/public/assets/generated.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The wallpaper and icon images are loaded from frontend/public/assets/generated (not served from the backend).",
+        "The simulation uses the generated icon images as the rolling/falling items.",
+        "Assets render crisply across common screen sizes (mobile/tablet/desktop)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not attempt to control or modify the user’s actual OS home screen; the effect must be implemented as an in-app simulation running in the browser.",
+    "Do not edit any files under frontend/src/components/ui or the immutable hook/entry paths listed in SYSTEM_CONTEXT (compose them instead)."
+  ],
+  "nonGoals": [
+    "Building a native iOS/Android app that alters the real home screen launcher behavior.",
+    "Multi-user features, persistence, or backend storage (not requested).",
+    "Internet Identity authentication (not requested)."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Playful abstract phone wallpaper background, warm gradient with subtle noise texture (wallpaper.dim_1170x2532.png)",
+      "Rounded-square app icon: camera symbol, flat vector, high contrast (icon-camera.dim_256x256.png)",
+      "Rounded-square app icon: music note symbol, flat vector, high contrast (icon-music.dim_256x256.png)",
+      "Rounded-square app icon: chat bubble symbol, flat vector, high contrast (icon-chat.dim_256x256.png)",
+      "Rounded-square app icon: map pin symbol, flat vector, high contrast (icon-map.dim_256x256.png)",
+      "Rounded-square app icon: game controller symbol, flat vector, high contrast (icon-game.dim_256x256.png)",
+      "Rounded-square app icon: settings gear symbol, flat vector, high contrast (icon-settings.dim_256x256.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
